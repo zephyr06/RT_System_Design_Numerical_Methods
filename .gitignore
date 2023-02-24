@@ -1,0 +1,13 @@
+*/__pycache__
+*/.idea
+.idea/
+tests/__pycache__
+/build
+*/build
+*/release
+/release
+TaskData/periodic-set-*
+TaskData/*/periodic-set-*
+
+.vscode
+*/.vscode

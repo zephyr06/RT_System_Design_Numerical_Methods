@@ -1,0 +1,42 @@
+# *RunSingle* are not test files, but only used to run single test cases
+gtsamAddTestsGlob(EnergyOptNLP "test*.cpp" "" "${CONVENIENCE_LIB_NAME}")
+# ADD_EXECUTABLE(testTask testTasks.cpp)
+# TARGET_LINK_LIBRARIES(testTask ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(testRTA testResponseTimeAnalysis.cpp)
+# TARGET_LINK_LIBRARIES(testRTA ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(testEnergy1 testEnergy.cpp)
+# TARGET_LINK_LIBRARIES(testEnergy1 ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(testOpt1 testOpt.cpp)
+# TARGET_LINK_LIBRARIES(testOpt1 ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(OptRun testOptSingle.cpp)
+# TARGET_LINK_LIBRARIES(OptRun ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(OptFile testOptFile.cpp)
+# TARGET_LINK_LIBRARIES(OptFile ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(sa1 testOptimizeSA.cpp)
+# TARGET_LINK_LIBRARIES(sa1 ${CONVENIENCE_LIB_NAME})
+# ADD_EXECUTABLE(weightTra testWeightBatch.cpp)
+# TARGET_LINK_LIBRARIES(weightTra ${CONVENIENCE_LIB_NAME})
+
+
+ADD_EXECUTABLE(GenerateTaskSet GenerateTaskSet.cpp)
+TARGET_LINK_LIBRARIES(GenerateTaskSet ${CONVENIENCE_LIB_NAME})
+
+# ADD_EXECUTABLE(FindUnsustainableCase FindUnsustainableCase.cpp)
+# TARGET_LINK_LIBRARIES(FindUnsustainableCase ${CONVENIENCE_LIB_NAME})
+
+ADD_EXECUTABLE(LLCompare LLBatchCompare.cpp)
+TARGET_LINK_LIBRARIES(LLCompare ${CONVENIENCE_LIB_NAME})
+
+ADD_EXECUTABLE(VerfiyTaskSetSchedulability VerfiyTaskSetSchedulability.cpp)
+TARGET_LINK_LIBRARIES(VerfiyTaskSetSchedulability ${CONVENIENCE_LIB_NAME})
+
+
+
+ADD_EXECUTABLE(LLBatch LLBatch.cpp)
+TARGET_LINK_LIBRARIES(LLBatch ${CONVENIENCE_LIB_NAME})
+
+ADD_EXECUTABLE(DAGBatch DAGBatch.cpp)
+TARGET_LINK_LIBRARIES(DAGBatch ${CONVENIENCE_LIB_NAME})
+
+ADD_EXECUTABLE(BatchControl BatchControl.cpp)
+TARGET_LINK_LIBRARIES(BatchControl ${CONVENIENCE_LIB_NAME})

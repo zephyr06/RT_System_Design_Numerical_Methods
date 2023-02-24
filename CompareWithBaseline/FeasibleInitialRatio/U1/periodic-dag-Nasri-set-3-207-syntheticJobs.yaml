@@ -1,0 +1,35 @@
+tasks:
+  - deadline: 50
+    period: 50
+    vertices:
+      - id: 0
+        executionTime: 1
+      - id: 1
+        executionTime: 1
+    edges: ~
+  - deadline: 100
+    period: 100
+    vertices:
+      - id: 0
+        executionTime: 1
+      - id: 1
+        executionTime: 1
+      - id: 2
+        executionTime: 2
+    edges:
+      - from: 0
+        to: 2
+      - from: 1
+        to: 2
+  - deadline: 50
+    period: 50
+    vertices:
+      - id: 0
+        executionTime: 1
+      - id: 1
+        executionTime: 1
+      - id: 2
+        executionTime: 13
+    edges:
+      - from: 1
+        to: 2
