@@ -18,7 +18,6 @@
 #include "gtsam/nonlinear/LevenbergMarquardtOptimizer.h"
 #include "sources/ControlOptimization/ReadControlCases.h"
 #include "sources/EnergyOptimization/EnergyFactor.h"
-#include "sources/EnergyOptimization/LockFactor.h"
 #include "sources/EnergyOptimization/RTARelatedFactor.h"
 #include "sources/MatrixConvenient.h"
 #include "sources/Utils/FactorGraphUtils.h"
@@ -50,7 +49,6 @@ MatrixDynamic GetNonzeroRow(MatrixDynamic &m) {
 template <class TaskSetType, class Schedul_Analysis>
 class Energy_OptDAG {
    public:
-    // this factor graph doesn't consider warm-start
     static gtsam::NonlinearFactorGraph BuildEnergyGraph(
         TaskSetType tasks, EliminationRecord &eliminationRecord) {
         gtsam::NonlinearFactorGraph graph;
@@ -58,10 +56,8 @@ class Energy_OptDAG {
             gtsam::noiseModel::Isotropic::Sigma(1, noiseModelSigma);
         auto modelPunishmentSoft1 = gtsam::noiseModel::Isotropic::Sigma(
             1, noiseModelSigma / weightHardConstraint);
-        // auto modelPunishmentHard = gtsam::noiseModel::Constrained::All(1);
 
         for (uint i = 0; i < tasks.size(); i++) {
-            // energy factor
             if (eliminationRecord[i].type == EliminationType::Not) {
                 graph.emplace_shared<EnergyFactor>(
                     GenerateKey(i, "executionTime"), tasks[i], i, modelNormal);
@@ -75,11 +71,6 @@ class Energy_OptDAG {
                     tasks[i].executionTimeOrg * MaxComputationTimeRestrict,
                     modelPunishmentSoft1);
             }
-
-            // if (eliminationRecord[i].type == EliminationType::Bound)
-            // {
-            //     graph.add(GenerateLockFactor(tasks.tasks_, i));
-            // }
         }
 
         // RTA factor
@@ -97,7 +88,6 @@ class Energy_OptDAG {
             EnergyOptUtils::GenerateInitialFG(tasks, eliminationRecord);
         if (debugMode == 1) {
             std::cout << Color::green;
-            // std::lock_guard<std::mutex> lock(mtx);
             auto sth = graph.linearize(initialEstimateFG)->jacobian();
             MatrixDynamic jacobianCurr = sth.first;
             std::cout << "Current Jacobian matrix:" << std::endl;
@@ -110,8 +100,6 @@ class Energy_OptDAG {
         gtsam::Values result;
         if (optimizerType == 1) {
             gtsam::DoglegParams params;
-            // if (debugMode == 1)
-            //     params.setVerbosityDL("VERBOSE");
             params.setDeltaInitial(deltaInitialDogleg);
             params.setRelativeErrorTol(relativeErrorTolerance);
             gtsam::DoglegOptimizer optimizer(graph, initialEstimateFG, params);
@@ -142,7 +130,7 @@ class Energy_OptDAG {
             rtaFromOpt;  // rtaFromOpt can only be used for 'cout'
         optComp = EnergyOptUtils::ExtractResults(result, tasks);
         UpdateTaskSetExecutionTime(tasks.tasks_, optComp);
-        // rtaFromOpt = RTAVector(tasks);
+
         Schedul_Analysis r(tasks);
         rtaFromOpt = r.ResponseTimeOfTaskSet();
         if (debugMode == 1) {
@@ -169,7 +157,6 @@ class Energy_OptDAG {
             std::cout << Color::def;
         }
 
-        // UpdateTaskSetExecutionTime(tasks, optComp);
         EndTimer(__func__);
         return std::make_pair(optComp, EnergyOptUtils::RealObj(tasks.tasks_));
     }
@@ -206,7 +193,6 @@ class Energy_OptDAG {
                         direction / std::abs(direction) * disturb;
                 }
             }
-            // int a = 1;
             if (eliminationRecord.whetherAllEliminated()) break;
         }
         if (debugMode == 1) {
@@ -228,7 +214,6 @@ class Energy_OptDAG {
         double errCurr = EnergyOptUtils::RealObj(tasks.tasks_);
         double initialError = errCurr;
         int loopCount = 0;
-        // double disturbIte = eliminateTol;
         bool whether_new_eliminate = false;
         while (whether_new_eliminate ||
                (errCurr < errPrev * (1 - relativeErrorToleranceOuterLoop))) {
@@ -252,7 +237,7 @@ class Energy_OptDAG {
         std::cout
             << "The number of outside loops in OptimizeTaskSetIterative is "
             << loopCount << std::endl;
-        std::cout << "Best optimal found: " << valueGlobalOpt << std::endl;
+        // std::cout << "Best optimal found: " << valueGlobalOpt << std::endl;
         std::cout << "After optimiazation found: " << postError << std::endl;
         if (valueGlobalOpt < postError) {
             UpdateTaskSetExecutionTime(tasks.tasks_, vectorGlobalOpt);
