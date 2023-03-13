@@ -1,0 +1,6 @@
+RT_System_Design_Numerical_Methods is released under the simplified BSD license, reproduced in the file 
+LICENSE.BSD in this directory.
+
+RT_System_Design_Numerical_Methods contains several third party libraries, with documentation of licensing
+and modifications as follows:
+- np-schedulability-analysis, 3-clause BSD license
