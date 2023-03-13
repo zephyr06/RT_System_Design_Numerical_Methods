@@ -4,3 +4,4 @@ LICENSE.BSD in this directory.
 RT_System_Design_Numerical_Methods contains several third party libraries, with documentation of licensing
 and modifications as follows:
 - np-schedulability-analysis, 3-clause BSD license
+- Moe, The MIT License, with sources from https://github.com/tonykero/Moe
